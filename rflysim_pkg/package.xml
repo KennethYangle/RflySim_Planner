@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>rflysim_pkg</name>
+  <version>0.1.1</version>
+  <description>rflysim_pkg</description>
+
+  <maintainer email="1269769296@qq.com">Yang Kun</maintainer>
+  <license>BSD</license>
+
+  <author email="1269769296@qq.com">Yang Kun</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>std_msgs</depend>
+
+</package>
