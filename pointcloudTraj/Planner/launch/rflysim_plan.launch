@@ -13,7 +13,34 @@
 <arg name="port1" default="20101" />
 <arg name="port2" default="20100" />
 
-<node name   ="sim_planning_demo" pkg ="pointcloudTraj" type   ="sim_planning_demo" output = "screen" required="true">        
+
+<node name ="server_ue4" pkg ="rflysim_pkg" type ="server_ue4.py" output = "screen">    
+        <remap from="/rflysim/sensor3/global_lidar" to="/map_server/local_map"/>    
+</node>
+
+<group if="$(arg use_pix)">
+        <arg name="fcu_url" default="/dev/ttyACM0:57600"/>
+        <include file="$(find mavros)/launch/px4.launch">
+                <arg name="fcu_url" value="$(arg fcu_url)"/>
+                <arg name="gcs_url" value=""/>
+                <arg name="tgt_system" value="$(arg mav_id)"/>
+                <arg name="tgt_component" value="1"/>
+        </include>
+</group>
+<group unless="$(arg use_pix)">
+        <arg name="fcu_url" default="udp://:$(arg port1)@$(arg IP):$(arg port2)"/>
+        <include file="$(find mavros)/launch/px4.launch">
+                <arg name="fcu_url" value="$(arg fcu_url)"/>
+                <arg name="gcs_url" value=""/>
+                <arg name="tgt_system" value="$(arg mav_id)"/>
+                <arg name="tgt_component" value="1"/>
+        </include>
+</group>
+
+<node name = "assemble_cmd" pkg = "offboard_pkg" type = "assemble_cmd.py" output = "screen" />
+
+
+<node name   ="sim_planning_demo" pkg ="pointcloudTraj" type   ="sim_planning_demo" output = "screen" required="true"  launch-prefix="bash -c 'sleep 5.0; $0 $@' ">        
         <remap from="~waypoints"       to="/waypoint_generator/waypoints"/>
         <remap from="~odometry"        to="/mavros/local_position/odom"/>
         <remap from="~PointCloud"      to="/map_server/local_map" />
@@ -64,9 +91,8 @@
         <param name="LocalSensing/rate"   value="10.0"/>        
         <param name="LocalSensing/std"    value="0.15"/>        
 </node> -->
-<node name ="server_ue4" pkg ="rflysim_pkg" type ="server_ue4.py" output = "screen">    
-        <remap from="/rflysim/sensor3/global_lidar" to="/map_server/local_map"/>    
-</node>
+
+
 
 <node pkg = "pointcloudTraj" type = "traj_server" output = "screen" name = "trajectory_server">
         <remap  from = "~trajectory"        to = "/sim_planning_demo/trajectory"/>
@@ -84,24 +110,6 @@
   <param name="init_y"  value="$(arg init_y)"/>
   <param name="init_z"  value="$(arg init_z)"/>
 </node> -->
-<group if="$(arg use_pix)">
-        <arg name="fcu_url" default="/dev/ttyACM0:57600"/>
-        <include file="$(find mavros)/launch/px4.launch">
-                <arg name="fcu_url" value="$(arg fcu_url)"/>
-                <arg name="gcs_url" value=""/>
-                <arg name="tgt_system" value="$(arg mav_id)"/>
-                <arg name="tgt_component" value="1"/>
-        </include>
-</group>
-<group unless="$(arg use_pix)">
-        <arg name="fcu_url" default="udp://:$(arg port1)@$(arg IP):$(arg port2)"/>
-        <include file="$(find mavros)/launch/px4.launch">
-                <arg name="fcu_url" value="$(arg fcu_url)"/>
-                <arg name="gcs_url" value=""/>
-                <arg name="tgt_system" value="$(arg mav_id)"/>
-                <arg name="tgt_component" value="1"/>
-        </include>
-</group>
 
 <!-- <node pkg="mavros" type="mavcmd" name="cmdlong" output="screen" 
 args="long 511 32 25000 0 0 0 0 0" 
@@ -114,7 +122,8 @@ args="long 511 32 25000 0 0 0 0 0"
 
 
 <node pkg="odom_visualization" name="odom_visualization" type="odom_visualization" output="screen">
-        <remap from="~cmd"  to="/position_cmd"/>
+        <!-- <remap from="~cmd"  to="/position_cmd"/> -->
+        <remap from="~odom"  to="/mavros/local_position/odom"/>
         <param name="color/a" value="0.8"/>    
         <param name="color/r" value="1.0"/>        
         <param name="color/g" value="0.0"/>        

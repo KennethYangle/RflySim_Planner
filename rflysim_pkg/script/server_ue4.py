@@ -36,23 +36,23 @@ for i in range(VehilceNum):
     MavList[i].InitMavLoop()
     MavList[i].InitTrueDataLoop()
 
-# Enter Offboard mode to start vehicle control
-time.sleep(2)
-for i in range(VehilceNum):
-    MavList[i].initOffboard()
+# # Enter Offboard mode to start vehicle control
+# time.sleep(2)
+# for i in range(VehilceNum):
+#     MavList[i].initOffboard()
 
-# Get the takeoff position of each vehicle to the UE4 Map
-# this can be adopted to obtain the global position of a vehicle in swarm simulation
-time.sleep(2)
-Error2UE4Map = []
-for i in range(VehilceNum):
-    mav = MavList[i]
-    Error2UE4Map = Error2UE4Map+[-np.array([mav.uavGlobalPos[0]-mav.uavPosNED[0],
-                                           mav.uavGlobalPos[1]-mav.uavPosNED[1], mav.uavGlobalPos[2]-mav.uavPosNED[2]])]
+# # Get the takeoff position of each vehicle to the UE4 Map
+# # this can be adopted to obtain the global position of a vehicle in swarm simulation
+# time.sleep(2)
+# Error2UE4Map = []
+# for i in range(VehilceNum):
+#     mav = MavList[i]
+#     Error2UE4Map = Error2UE4Map+[-np.array([mav.uavGlobalPos[0]-mav.uavPosNED[0],
+#                                            mav.uavGlobalPos[1]-mav.uavPosNED[1], mav.uavGlobalPos[2]-mav.uavPosNED[2]])]
 
-# fly to 10m high above its takeoff position
-for i in range(VehilceNum):
-    MavList[i].SendPosNED(-5, 5, -1, 0)
-    MavList[i].SendCopterSpeed(3)
-time.sleep(10)
+# # fly to 10m high above its takeoff position
+# for i in range(VehilceNum):
+#     MavList[i].SendPosNED(-5, 5, -1, 0)
+#     MavList[i].SendCopterSpeed(3)
+# time.sleep(10)
 
