@@ -15,7 +15,7 @@
 
 
 <node name ="server_ue4" pkg ="rflysim_pkg" type ="server_ue4.py" output = "screen">    
-        <remap from="/rflysim/sensor3/global_lidar" to="/map_server/local_map"/>    
+        <remap from="/rflysim/sensor3/vehicle_lidar" to="/rflysim/vehicle_lidar"/>    
 </node>
 
 <group if="$(arg use_pix)">
@@ -36,6 +36,8 @@
                 <arg name="tgt_component" value="1"/>
         </include>
 </group>
+
+<node name = "pcl_tf" pkg = "pointcloud_convert" type = "pcl_tf" output = "screen" />
 
 <node name = "assemble_cmd" pkg = "offboard_pkg" type = "assemble_cmd.py" output = "screen" />
 

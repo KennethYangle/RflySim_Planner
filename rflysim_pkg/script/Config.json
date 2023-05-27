@@ -44,7 +44,7 @@
         },
         {
             "SeqID":3,
-            "TypeID":5,
+            "TypeID":4,
             "TargetCopter":1,
             "TargetMountType":0,
             "DataWidth":1800,
