@@ -119,7 +119,7 @@ Visualization Manager:
           Marker Topic: /sim_planning_demo/flight_corridor
           Name: corridor_path
           Namespaces:
-            pcd_RRT/flight_corridor: true
+            {}
           Queue Size: 100
           Value: true
         - Class: rviz/Marker
@@ -343,9 +343,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4647964537143707
+      Pitch: 0.32979658246040344
       Target Frame: map
-      Yaw: 3.4844532012939453
+      Yaw: 4.854459285736084
     Saved:
       - Class: rviz/Orbit
         Distance: 52.31420135498047

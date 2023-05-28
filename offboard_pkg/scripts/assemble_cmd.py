@@ -234,7 +234,7 @@ class Assemble:
         rate = rospy.Rate(50)
         while not rospy.is_shutdown():
             self.px4.moveByPosENU(self.Position_cmd.position.x, self.Position_cmd.position.y, self.Position_cmd.position.z)
-            print(self.Position_cmd.position.x, self.Position_cmd.position.y, self.Position_cmd.position.z, self.Position_cmd.yaw)
+            # print(self.Position_cmd.position.x, self.Position_cmd.position.y, self.Position_cmd.position.z, self.Position_cmd.yaw)
             rate.sleep()
 
 

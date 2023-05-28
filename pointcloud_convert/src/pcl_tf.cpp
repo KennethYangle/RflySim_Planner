@@ -57,8 +57,8 @@ public:
 
   void vehicleCloudCallback(const sensor_msgs::PointCloud2::ConstPtr &cloud)  //接收到点云和tf之后，根据tf转化，然后回调函数
   {
-      pcl::PointCloud<pcl::PointXYZL> pc;
-      pcl::PointCloud<pcl::PointXYZL> pc_global;
+      pcl::PointCloud<pcl::PointXYZ> pc;
+      pcl::PointCloud<pcl::PointXYZ> pc_global;
       pcl::fromROSMsg(*cloud, pc);
 
       Eigen::Matrix4f sensorToWorld;

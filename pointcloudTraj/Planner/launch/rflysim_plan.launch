@@ -3,9 +3,9 @@
 <arg name="init_y" default="0.0"/>
 <arg name="init_z" default="0.0"/>
 
-<arg name="end_x" default=" 30.0"/>
-<arg name="end_y" default=" 30.0"/>
-<arg name="end_z" default=" 2.0"/>
+<arg name="end_x" default=" -20.0"/>
+<arg name="end_y" default=" 100.0"/>
+<arg name="end_z" default=" 4.0"/>
 
 <arg name="mav_id" default="1" />
 <arg name="use_pix" default="false" />
