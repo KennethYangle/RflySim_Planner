@@ -20,7 +20,10 @@ private:
   ros::Subscriber m_mavPoseSub;     //接收位姿
   ros::Subscriber m_pointCloudSub;  //接收点云
   ros::Publisher m_globalcloudPub;  //发布局部地图点云
+  ros::Publisher m_allcloudPub;     //发布拼接地图点云
   tf::StampedTransform m_sensorToWorldTf;   //定义存放变换关系的变量
+  pcl::PointCloud<pcl::PointXYZ> m_pc_all;
+  int cnt_vehcloud_cb = 0;
 
 public:
   SegMapROSWraper()
@@ -29,6 +32,7 @@ public:
       m_mavPoseSub = m_nh.subscribe("/mavros/local_position/pose", 1, &SegMapROSWraper::mavPoseCallback, this);
       m_pointCloudSub = m_nh.subscribe("/rflysim/vehicle_lidar", 1, &SegMapROSWraper::vehicleCloudCallback, this);    //接收rosbag中的点云消息
       m_globalcloudPub = m_nh.advertise<sensor_msgs::PointCloud2>("/map_server/local_map", 2, true);   //发布全局地图，用于rviz展示
+      m_allcloudPub = m_nh.advertise<sensor_msgs::PointCloud2>("/map_server/all_map", 2, true);   //发布全局地图，用于rviz展示
   }
 
   ~SegMapROSWraper()
@@ -57,6 +61,7 @@ public:
 
   void vehicleCloudCallback(const sensor_msgs::PointCloud2::ConstPtr &cloud)  //接收到点云和tf之后，根据tf转化，然后回调函数
   {
+      cnt_vehcloud_cb += 1;
       pcl::PointCloud<pcl::PointXYZ> pc;
       pcl::PointCloud<pcl::PointXYZ> pc_global;
       pcl::fromROSMsg(*cloud, pc);
@@ -66,10 +71,19 @@ public:
       pcl::transformPointCloud(pc, pc_global, sensorToWorld);   //得到世界坐标系下的点云
       // std::cout<< sensorToWorld <<std::endl;
       sensor_msgs::PointCloud2 map_cloud;
-      pcl::toROSMsg(pc_global, map_cloud);  //搞成消息
+      pcl::toROSMsg(pc_global, map_cloud);  //消息
       map_cloud.header.stamp = ros::Time::now();
       map_cloud.header.frame_id = "map"; 
-      m_globalcloudPub .publish(map_cloud);  //加上时间戳和frameid发布出来
+      m_globalcloudPub.publish(map_cloud);  //加上时间戳和frameid发布出来
+      if (cnt_vehcloud_cb % 20 == 0)
+      {
+          m_pc_all += pc_global;
+          sensor_msgs::PointCloud2 all_cloud;
+          pcl::toROSMsg(m_pc_all, all_cloud);  //消息
+          all_cloud.header.stamp = ros::Time::now();
+          all_cloud.header.frame_id = "map"; 
+          m_allcloudPub.publish(all_cloud);  //加上时间戳和frameid发布出来
+      }
   }
 };
 
