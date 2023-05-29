@@ -57,7 +57,7 @@ class Px4Controller:
             self.offboard_state = self.offboard()
             self.rate.sleep()
         print("zhunbeiqifei")
-        self.takeoff(h=1.8)
+        self.takeoff(h=3.0)
 
 
     # 无人机位置姿态回调函数
@@ -202,30 +202,10 @@ class Assemble:
         self.px4 = px4
         self.start_time = time.time()
         
-        # self.pipeline_cmd = TwistStamped()
-        # self.dj_cmd = TwistStamped()
-        # self.obs_cmd = TwistStamped()
-        # self.dj_action = Action()
         self.Position_cmd = PositionCommand()
 
-        # self.Pipeline_cmd_sub = rospy.Subscriber('Pipeline_cmd', TwistStamped, self.Pipeline_cmd_callback)
-        # self.DJ_cmd_sub = rospy.Subscriber('DJ_cmd', AttitudeTarget, self.DJ_cmd_callback)
-        # self.Obs_cmd_sub = rospy.Subscriber('Obs_cmd', TwistStamped, self.Obs_cmd_callback)
-        # self.Expect_action_sub = rospy.Subscriber('expect_action'+str(param_id), Action, self.Expect_action_callback)
-        # self.vel_pub = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size=10)
         self.Position_cmd_sub = rospy.Subscriber("/position_cmd", PositionCommand, self.Position_cmd_callback)
 
-    # def Pipeline_cmd_callback(self, msg):
-    #     self.pipeline_cmd = msg
-
-    # def DJ_cmd_callback(self, msg):
-    #     self.dj_cmd = msg
-
-    # def Obs_cmd_callback(self, msg):
-    #     self.obs_cmd = msg
-
-    # def Expect_action_callback(self, msg):
-    #     self.dj_action = msg
 
     def Position_cmd_callback(self, msg):
         self.Position_cmd = msg

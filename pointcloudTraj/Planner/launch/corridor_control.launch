@@ -39,7 +39,8 @@
 
 <node name = "pcl_tf" pkg = "pointcloud_convert" type = "pcl_tf" output = "screen" />
 
-<node name = "assemble_cmd" pkg = "offboard_pkg" type = "assemble_cmd.py" output = "screen" />
+<!-- <node name = "assemble_cmd" pkg = "offboard_pkg" type = "assemble_cmd.py" output = "screen" /> -->
+<node name = "obs" pkg = "offboard_pkg" type = "obs.py" output = "screen" />
 
 
 <node name   ="sim_planning_demo" pkg ="pointcloudTraj" type   ="sim_planning_demo" output = "screen" required="true"  launch-prefix="bash -c 'sleep 10.0; $0 $@' ">        
@@ -87,14 +88,14 @@
 </node>
 
 
-<node pkg = "pointcloudTraj" type = "traj_server" output = "screen" name = "trajectory_server">
+<!-- <node pkg = "pointcloudTraj" type = "traj_server" output = "screen" name = "trajectory_server">
         <remap  from = "~trajectory"        to = "/sim_planning_demo/trajectory"/>
         <remap  from = "~odometry"          to = "/mavros/local_position/odom"/>
         <remap  from = "~position_command"  to = "/position_cmd"/>
 
         <param name="optimization/poly_order_min"           value="4"/> 
         <param name="optimization/poly_order_max"           value="8"/> 
-</node>
+</node> -->
 
 
  <node name="rviz" pkg="rviz" type="rviz" output="screen"
